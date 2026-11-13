@@ -1,0 +1,223 @@
+﻿:root {
+      --felt: #126044;
+      --felt-dark: #0b3e2d;
+      --gold: #f5c96a;
+      --cream: #fffaf0;
+      --red: #d34b4b;
+      --ink: #17231e;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--cream);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
+      background:
+        radial-gradient(circle at 20% 10%, rgba(255,255,255,.08), transparent 25%),
+        linear-gradient(135deg, #342016, #17100c 65%, #24150e);
+    }
+
+    .app { width: min(1180px, 100%); margin: 0 auto; padding: 24px 16px 32px; }
+    header { display: flex; justify-content: space-between; gap: 16px; align-items: end; margin-bottom: 18px; }
+    .game-controls { display: flex; align-items: end; gap: 10px; flex-wrap: wrap; justify-content: end; }
+    .difficulty-control { display: grid; gap: 4px; color: #e8c994; font-size: .72rem; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; }
+    select {
+      min-width: 108px; border: 1px solid rgba(255,227,180,.38); border-radius: 999px;
+      padding: 10px 30px 10px 13px; color: var(--cream); background: rgba(38,19,9,.72);
+      font: inherit; font-size: .82rem; text-transform: none; letter-spacing: normal; cursor: pointer;
+    }
+    select:focus { outline: 2px solid var(--gold); outline-offset: 2px; }
+    h1 { margin: 0; font-size: clamp(1.7rem, 4vw, 2.7rem); letter-spacing: -.04em; }
+    .subtitle { margin: 5px 0 0; color: #d8f1e4; }
+    button {
+      position: relative; overflow: hidden;
+      border: 0; border-radius: 999px; padding: 11px 18px; cursor: pointer;
+      color: var(--ink); background: var(--gold); font-weight: 800;
+      box-shadow: 0 4px 0 #b6842c; transition: transform .15s, filter .15s;
+    }
+    button:hover { filter: brightness(1.08); transform: translateY(-1px); }
+    button:active { transform: translateY(2px); box-shadow: 0 2px 0 #b6842c; }
+    button:disabled { cursor: not-allowed; opacity: .48; transform: none; }
+    #music-toggle { color: var(--cream); background: rgba(38,19,9,.72); box-shadow: 0 4px 0 #24150e; }
+    button .ripple { position: absolute; width: 12px; height: 12px; border-radius: 50%; background: rgba(255,255,255,.55); pointer-events: none; transform: scale(0); animation: ripple .55s ease-out; }
+    @keyframes ripple { to { transform: scale(18); opacity: 0; } }
+    @keyframes dealIn {
+      from { opacity: 0; transform: translateY(-38px) rotate(-12deg) scale(.8); }
+      to { opacity: 1; }
+    }
+    @keyframes dealToPlayer {
+      from {
+        opacity: 1;
+        transform: translate(var(--deal-x), var(--deal-y)) scale(.92) rotate(-8deg);
+      }
+      to { opacity: 1; transform: translate(0, 0) scale(1) rotate(0deg); }
+    }
+    @keyframes landCard {
+      from { opacity: 0; transform: translateY(-30px) rotate(-25deg) scale(1.12); }
+      to { opacity: 1; }
+    }
+    @keyframes activePulse {
+      0%, 100% { box-shadow: 0 0 0 rgba(245,201,106,0); }
+      50% { box-shadow: 0 0 22px rgba(245,201,106,.2); }
+    }
+    @keyframes statusPop {
+      from { opacity: .25; transform: translateY(3px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .table {
+      position: relative; overflow: hidden;
+      display: grid; grid-template-columns: 1fr 1.4fr 1fr; grid-template-rows: auto auto auto;
+      gap: 14px; align-items: center; padding: 30px 22px 24px;
+      border: 10px solid #24150e; border-radius: 20px;
+      background:
+        linear-gradient(90deg, rgba(34,18,10,.18), transparent 20%, rgba(34,18,10,.15) 70%, transparent),
+        repeating-linear-gradient(4deg, #805335 0 4px, #704428 4px 11px, #8b5a38 11px 15px);
+      box-shadow: inset 0 0 35px rgba(28,12,4,.45), 0 22px 48px rgba(0,0,0,.35);
+    }
+    .table::before {
+      content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .2;
+      background: repeating-linear-gradient(88deg, transparent 0 45px, rgba(255,210,145,.13) 46px 48px, transparent 49px 93px);
+      mix-blend-mode: screen;
+    }
+    .player { position: relative; z-index: 1; padding: 12px; border: 1px solid rgba(255,227,180,.12); border-radius: 16px; background: rgba(38,19,9,.27); text-align: center; transition: background .2s, transform .2s; }
+    .player.active { outline: 2px solid var(--gold); background: rgba(245,201,106,.17); animation: activePulse 2.3s ease-in-out infinite; }
+    .player.active { transform: translateY(-2px); }
+    .player h2 { margin: 0 0 4px; font-size: 1rem; }
+    .player p { margin: 0; color: #bce6d0; font-size: .82rem; }
+    .north { grid-column: 2; grid-row: 1; }
+    .west { grid-column: 1; grid-row: 2; }
+    .east { grid-column: 3; grid-row: 2; }
+    .south { grid-column: 1 / 4; grid-row: 3; }
+    .back-row { position: relative; height: 62px; margin-top: 9px; }
+    .card.back { position: absolute; left: calc(50% - 64px); top: 5px; width: 31px; height: 45px; margin: 0; border: 2px solid #dfc79c; background: repeating-linear-gradient(45deg, #3e2719, #3e2719 4px, #9a673d 4px, #9a673d 7px); }
+    .back-row .card.back:nth-child(1) { margin-left: 0; transform: rotate(-15deg); }
+    .back-row .card.back:nth-child(2) { margin-left: 10px; transform: rotate(-11deg); }
+    .back-row .card.back:nth-child(3) { margin-left: 20px; transform: rotate(-8deg); }
+    .back-row .card.back:nth-child(4) { margin-left: 30px; transform: rotate(-5deg); }
+    .back-row .card.back:nth-child(5) { margin-left: 40px; transform: rotate(-2deg); }
+    .back-row .card.back:nth-child(6) { margin-left: 50px; transform: rotate(1deg); }
+    .back-row .card.back:nth-child(7) { margin-left: 60px; transform: rotate(4deg); }
+    .back-row .card.back:nth-child(8) { margin-left: 70px; transform: rotate(7deg); }
+    .back-row .card.back:nth-child(9) { margin-left: 80px; transform: rotate(10deg); }
+    .back-row .card.back:nth-child(10) { margin-left: 90px; transform: rotate(13deg); }
+    .back-row .card.back:nth-child(11) { margin-left: 100px; transform: rotate(16deg); }
+    .back-row .card.back:nth-child(12) { margin-left: 110px; transform: rotate(19deg); }
+    .back-row .card.back:nth-child(13) { margin-left: 120px; transform: rotate(22deg); }
+
+    .center { position: relative; z-index: 1; grid-column: 2; grid-row: 2; text-align: center; }
+    .piles { display: flex; justify-content: center; align-items: center; gap: 42px; min-height: 124px; }
+    .pile-label { margin-top: 7px; color: #c5ead6; font-size: .78rem; }
+    .discard-zone {
+      position: relative; width: 156px; height: 112px; border-radius: 18px;
+      background: rgba(45,22,10,.17); box-shadow: inset 0 2px 10px rgba(0,0,0,.2);
+    }
+    .discard-zone .discarded-card {
+      position: absolute; left: 49px; top: 12px;
+      transition: transform .2s;
+    }
+    .discard-zone.empty { border: 2px dashed rgba(255,255,255,.28); background: rgba(3, 35, 25, .08); }
+    .discard-zone:not(.empty) .card { animation: landCard .34s cubic-bezier(.2,.8,.25,1) both; }
+    .bomb-flight {
+      position: fixed !important;
+      z-index: 200;
+      pointer-events: none;
+      transition: transform .75s cubic-bezier(.2,.8,.25,1), opacity .75s ease;
+      box-shadow: 0 12px 24px rgba(0,0,0,.4);
+    }
+    .play-flight {
+      position: fixed !important;
+      z-index: 200;
+      pointer-events: none;
+      transition: transform .62s cubic-bezier(.2,.8,.25,1), opacity .62s ease;
+      box-shadow: 0 12px 24px rgba(0,0,0,.4);
+    }
+    .bomb-hit {
+      animation: bombHit .6s ease both;
+    }
+    @keyframes bombHit {
+      0%, 100% { filter: brightness(1); transform: scale(1); }
+      35% { filter: brightness(1.7); transform: scale(1.05); }
+      70% { filter: brightness(.75); transform: scale(.98); }
+    }
+    .card {
+      width: 58px; height: 82px; display: inline-flex; flex-direction: column; justify-content: space-between;
+      padding: 7px; border: 1px solid #d5d5d5; border-radius: 8px; color: var(--ink);
+      background: linear-gradient(135deg, #fffdf6, #ece7d9); box-shadow: 0 5px 8px rgba(0,0,0,.28); user-select: none;
+    }
+    .card.red { color: var(--red); }
+    .card .corner { font-weight: 900; line-height: 1; text-align: left; }
+    .card .suit { align-self: center; font-size: 1.7rem; }
+    .empty { width: 58px; height: 82px; border: 2px dashed rgba(255,255,255,.4); border-radius: 8px; }
+
+    .status { min-height: 28px; margin: 16px 0 10px; color: #fff1bd; text-align: center; font-weight: 700; animation: statusPop .25s ease-out; }
+    .hand-section { padding: 17px; border-radius: 20px; background: rgba(0,0,0,.18); }
+    .hand-title { display: flex; justify-content: space-between; gap: 12px; align-items: center; }
+    .hand-title > div { display: flex; gap: 8px; flex-wrap: wrap; justify-content: end; }
+    .hand-title h2 { margin: 0; font-size: 1.1rem; }
+    .hand { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin-top: 15px; }
+    #human-hand { min-height: 132px; align-items: flex-end; gap: 0; padding: 18px 26px 4px; }
+    #human-hand .card { margin-left: -14px; transform-origin: bottom center; }
+    #human-hand .card:first-child { margin-left: 0; }
+    #human-hand .card:nth-child(1) { transform: rotate(-16deg) translateY(10px); }
+    #human-hand .card:nth-child(2) { transform: rotate(-13deg) translateY(6px); }
+    #human-hand .card:nth-child(3) { transform: rotate(-10deg) translateY(3px); }
+    #human-hand .card:nth-child(4) { transform: rotate(-7deg); }
+    #human-hand .card:nth-child(5) { transform: rotate(-4deg); }
+    #human-hand .card:nth-child(6) { transform: rotate(-2deg); }
+    #human-hand .card:nth-child(7) { transform: rotate(0deg) translateY(-2px); }
+    #human-hand .card:nth-child(8) { transform: rotate(2deg); }
+    #human-hand .card:nth-child(9) { transform: rotate(4deg); }
+    #human-hand .card:nth-child(10) { transform: rotate(7deg); }
+    #human-hand .card:nth-child(11) { transform: rotate(10deg) translateY(3px); }
+    #human-hand .card:nth-child(12) { transform: rotate(13deg) translateY(6px); }
+    #human-hand .card:nth-child(13) { transform: rotate(16deg) translateY(10px); }
+    .hand .card { cursor: pointer; transition: transform .15s, outline .15s; }
+    #human-hand .card:hover, #human-hand .card.selected { transform: translateY(-14px) rotate(0deg) !important; outline: 3px solid var(--gold); z-index: 3; }
+    .deal-in { animation: dealIn .52s cubic-bezier(.2,.8,.25,1) both; }
+    .deal-flying {
+      position: relative;
+      z-index: 4;
+      will-change: transform, opacity;
+      backface-visibility: hidden;
+      animation: dealToPlayer .78s cubic-bezier(.16,.84,.24,1) both;
+    }
+    .deal-flying::before {
+      content: "";
+      position: absolute;
+      z-index: 5;
+      inset: -1px;
+      border: 2px solid #dfc79c;
+      border-radius: 8px;
+      background: repeating-linear-gradient(45deg, #3e2719 0 4px, #9a673d 4px 7px);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.2);
+    }
+    .deal-flying .corner,
+    .deal-flying .suit {
+      visibility: hidden;
+    }
+    .rules { margin: 16px 0 0; color: #c5ead6; font-size: .82rem; text-align: center; }
+
+    @media (max-width: 700px) {
+      .app { padding: 16px 10px 24px; }
+      header { align-items: start; flex-direction: column; }
+      .game-controls { width: 100%; justify-content: start; }
+      .table { grid-template-columns: 1fr 1fr; grid-template-rows: auto auto auto auto; padding: 12px; gap: 9px; }
+      .north { grid-column: 1 / 3; grid-row: 1; }
+      .west { grid-column: 1; grid-row: 2; }
+      .east { grid-column: 2; grid-row: 2; }
+      .center { grid-column: 1 / 3; grid-row: 3; }
+      .south { grid-column: 1 / 3; grid-row: 4; }
+      .card { width: 49px; height: 70px; padding: 5px; }
+      .card .suit { font-size: 1.4rem; }
+      .empty { width: 49px; height: 70px; }
+      .discard-zone { width: 126px; height: 86px; }
+      .discard-zone .discarded-card { left: 39px; top: 8px; }
+      .card.back { width: 25px; height: 37px; }
+      #human-hand { padding-left: 8px; padding-right: 8px; }
+      #human-hand .card { margin-left: -18px; }
+      #human-hand .card:first-child { margin-left: 0; }
+    }
+

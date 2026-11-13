@@ -1,0 +1,76 @@
+﻿<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Remi Poker</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header>
+        <div>
+          <h1>Remi Poker</h1>
+        </div>
+        <div class="game-controls">
+          <label class="difficulty-control" for="difficulty">
+            Kesulitan
+            <select id="difficulty">
+              <option value="easy">Easy</option>
+              <option value="normal" selected>Normal</option>
+              <option value="hard">Hard</option>
+            </select>
+          </label>
+          <label class="difficulty-control" for="next-bonus">
+            Bonus berikutnya
+            <select id="next-bonus">
+              <option value="none" selected>Tidak ada</option>
+              <option value="per">Per</option>
+              <option value="tris">Tris</option>
+              <option value="fullHouse">Polo / Full House</option>
+              <option value="poloSeri">Polo Seri</option>
+              <option value="seri">Seri</option>
+              <option value="bom">Bom</option>
+            </select>
+          </label>
+          <button id="new-game">Permainan Baru</button>
+          <button id="music-toggle" type="button" aria-pressed="true">
+            Musik: Nyala
+          </button>
+        </div>
+      </header>
+
+      <section class="table" aria-label="Meja permainan">
+        <div class="player north" id="player-2"></div>
+        <div class="player west" id="player-3"></div>
+        <div class="center">
+          <div class="piles">
+            <div>
+              <div id="discard-card" class="discard-zone empty"></div>
+              <div id="last-play-label" class="pile-label">
+                Belum ada permainan
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="player east" id="player-4"></div>
+        <div class="player south" id="player-1"></div>
+      </section>
+
+      <div id="status" class="status" role="status"></div>
+      <section class="hand-section">
+        <div class="hand-title">
+          <h2>Kartu kamu</h2>
+          <div>
+            <button id="pass-button" disabled>Pass</button>
+            <button id="play-button" disabled>Mainkan kartu</button>
+          </div>
+        </div>
+        <div id="human-hand" class="hand"></div>
+        <footer class="rules">Copyright - @Clauche7</footer>
+      </section>
+    </main>
+
+    <script src="script.js" defer></script>
+  </body>
+</html>

@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Remi Arab — 1 vs 1</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <div>
+        <h1>Remi Arab</h1>
+        <p class="subtitle">Pertandingan 1 vs 1</p>
+      </div>
+      <button id="new-game">Permainan Baru</button>
+    </header>
+    <main>
+      <section class="scoreboard">
+        <div class="score">Kamu <strong id="player-score">0</strong></div>
+        <div id="status">Memulai permainan...</div>
+        <div class="score">Komputer <strong id="computer-score">0</strong></div>
+      </section>
+      <section class="table">
+        <div class="opponent">
+          <div class="label">
+            <span>Komputer</span><span id="opponent-count">14 kartu</span>
+          </div>
+          <div id="opponent-cards" class="cards"></div>
+        </div>
+        <div class="middle">
+          <div class="pile">
+            <div
+              id="stock"
+              class="card back"
+              role="button"
+              tabindex="0"
+              aria-label="Ambil kartu dari tumpukan"
+            ></div>
+            <div>Sisa kartu: <b id="stock-count">0</b></div>
+          </div>
+          <div class="pile discard">
+            <div id="discard-card"></div>
+            <div>Kartu tengah</div>
+          </div>
+        </div>
+        <div class="player">
+          <div class="label">
+            <span>Kartu random</span><span id="player-count">15 kartu</span>
+          </div>
+          <div
+            id="player-cards"
+            class="cards"
+            aria-label="Kartu di tangan"
+          ></div>
+          <div class="actions">
+            <span id="hint">Klik halaman untuk memulai permainan.</span>
+          </div>
+        </div>
+      </section>
+      <section class="rules">
+        <h2>Cara bermain</h2>
+        <p>
+          Tris = 3 kartu dengan angka sama. Bom = 4 kartu dengan angka sama.
+          Seri = minimal 3 kartu berurutan dengan jenis yang sama.
+        </p>
+        <p>
+          Setiap pemain harus menyusun tepat 14 kartu. Joker dapat menggantikan
+          kartu apa pun. Seret sisa kartu ke tangan untuk mengambil, lalu seret
+          satu kartu ke tengah meja untuk membuang.
+        </p>
+      </section>
+      <footer class="rules">Copyright - @Clauche7</footer>
+    </main>
+    <div id="modal" class="modal" hidden>
+      <div class="modal-card">
+        <h2 id="modal-title"></h2>
+        <p id="modal-text"></p>
+        <button id="modal-close">Main lagi</button>
+      </div>
+    </div>
+    <script src="script.js" defer></script>
+  </body>
+</html>
